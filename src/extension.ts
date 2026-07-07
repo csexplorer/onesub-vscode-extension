@@ -68,6 +68,14 @@ export function activate(context: vscode.ExtensionContext): void {
         health!.setProvider(provider);
         void health!.refresh();
       }
+    }),
+    // Trust can be granted after activation; re-read config so a workspace
+    // path override starts being honored only once the folder is trusted.
+    vscode.workspace.onDidGrantWorkspaceTrust(() => {
+      provider = buildProvider();
+      deps.provider = provider;
+      health!.setProvider(provider);
+      void health!.refresh();
     })
   );
 }

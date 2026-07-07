@@ -18,10 +18,16 @@ export function readConfig(): OneSubConfig {
   const c = vscode.workspace.getConfiguration(BRAND.id);
   const convention = c.get<string>("commitConvention", "conventional");
   const engine = c.get<string>("engine", "claude-code");
+  // Executable paths are marked "restricted" in package.json so VS Code
+  // withholds workspace-provided overrides until the folder is trusted, but
+  // we don't rely on that alone: force the safe PATH-resolved default in an
+  // untrusted workspace regardless, since a repo's .vscode/settings.json is
+  // attacker-controlled content and this value is spawned as a command.
+  const trusted = vscode.workspace.isTrusted;
   return {
     engine: engine === "codex" ? "codex" : "claude-code",
-    claudePath: c.get<string>("claudePath", "claude"),
-    codexPath: c.get<string>("codexPath", "codex"),
+    claudePath: trusted ? c.get<string>("claudePath", "claude") : "claude",
+    codexPath: trusted ? c.get<string>("codexPath", "codex") : "codex",
     diffMaxLines: c.get<number>("diffMaxLines", 0),
     commitConvention: convention === "plain" ? "plain" : "conventional",
     requestTimeoutMs: c.get<number>("requestTimeoutMs", 60_000)
