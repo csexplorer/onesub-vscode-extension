@@ -3,7 +3,7 @@
   "displayName": "OneSub — Subscription-Powered AI Buttons",
   "description": "One-click routine dev actions (commit message, explain, docstring) powered by your own Claude Code subscription. No Copilot, no API key, no second subscription.",
   "version": "0.1.0",
-  "publisher": "solo-dev",
+  "publisher": "onesub-dev",
   "license": "MIT",
   "engines": {
     "vscode": "^1.90.0"
