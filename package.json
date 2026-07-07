@@ -1,7 +1,7 @@
 {
   "name": "onesub",
   "displayName": "OneSub — AI Buttons for Claude Code & Codex",
-  "description": "One-click routine dev actions (commit message, explain, docstring) that run through your locally installed Claude Code CLI.",
+  "description": "One-click routine dev actions (commit message, explain, docstring) that run through your locally installed Claude Code & Codex CLI.",
   "version": "0.1.3",
   "publisher": "onesub-dev",
   "license": "MIT",
@@ -72,10 +72,18 @@
         }
       ],
       "commandPalette": [
-        { "command": "onesub.generateCommitMessage" },
-        { "command": "onesub.explainSelection" },
-        { "command": "onesub.generateDocstring" },
-        { "command": "onesub.recheckHealth" }
+        {
+          "command": "onesub.generateCommitMessage"
+        },
+        {
+          "command": "onesub.explainSelection"
+        },
+        {
+          "command": "onesub.generateDocstring"
+        },
+        {
+          "command": "onesub.recheckHealth"
+        }
       ]
     },
     "configuration": {
@@ -83,14 +91,17 @@
       "properties": {
         "onesub.engine": {
           "type": "string",
-          "enum": ["claude-code", "codex"],
+          "enum": [
+            "claude-code",
+            "codex"
+          ],
           "default": "claude-code",
           "description": "Which locally installed CLI engine runs the buttons."
         },
         "onesub.claudePath": {
           "type": "string",
           "default": "claude",
-          "description": "Path to the Claude Code CLI executable. Leave as 'claude' if it is on your PATH."
+          "description": "Path to the Claude Code & Codex CLI executable. Leave as 'claude' if it is on your PATH."
         },
         "onesub.codexPath": {
           "type": "string",
@@ -105,7 +116,10 @@
         },
         "onesub.commitConvention": {
           "type": "string",
-          "enum": ["conventional", "plain"],
+          "enum": [
+            "conventional",
+            "plain"
+          ],
           "default": "conventional",
           "description": "Commit message style. 'conventional' produces Conventional Commits (feat:, fix:, ...); 'plain' produces a plain summary."
         },
@@ -113,7 +127,7 @@
           "type": "number",
           "default": 60000,
           "minimum": 5000,
-          "description": "Maximum time to wait for a Claude Code response before aborting."
+          "description": "Maximum time to wait for a Claude Code & Codex response before aborting."
         }
       }
     }
