@@ -26,11 +26,17 @@ another agent chat.
 
 ## Requirements
 
-- [Claude Code](https://docs.claude.com/claude-code) installed and signed in:
-  ```
-  npm install -g @anthropic-ai/claude-code
-  claude            # then sign in
-  ```
+- One of the supported engines installed and signed in:
+  - [Claude Code](https://docs.claude.com/claude-code) (default):
+    ```
+    npm install -g @anthropic-ai/claude-code
+    claude            # then sign in
+    ```
+  - [Codex CLI](https://github.com/openai/codex) (set `onesub.engine` to `codex`):
+    ```
+    npm install -g @openai/codex
+    codex login
+    ```
 - VS Code `^1.90.0`.
 
 On activation OneSub health-checks the engine (installed? signed in?) and shows the
@@ -41,7 +47,9 @@ rather than failing silently.
 
 | Setting | Default | Purpose |
 | --- | --- | --- |
-| `onesub.claudePath` | `claude` | Path to the CLI if it isn't on `PATH`. |
+| `onesub.engine` | `claude-code` | Which engine runs the buttons: `claude-code` or `codex`. |
+| `onesub.claudePath` | `claude` | Path to the Claude Code CLI if it isn't on `PATH`. |
+| `onesub.codexPath` | `codex` | Path to the Codex CLI if it isn't on `PATH`. |
 | `onesub.diffMaxLines` | `0` | Refuse commit generation above this many changed lines. `0` disables the check. |
 | `onesub.commitConvention` | `conventional` | `conventional` (feat:/fix:) or `plain`. |
 | `onesub.requestTimeoutMs` | `60000` | Abort a call after this long. |
@@ -63,8 +71,9 @@ Press <kbd>F5</kbd> in VS Code to launch the Extension Development Host.
 ```
 extension.ts            activation, command registration, config-change rewiring
  ├─ providers/
- │   ├─ AIProvider.ts        engine interface (Codex can slot in later)
- │   └─ ClaudeCodeProvider   M1: wraps `claude -p` headless; health probe
+ │   ├─ AIProvider.ts        engine interface
+ │   ├─ ClaudeCodeProvider   wraps `claude -p` headless; health probe
+ │   └─ CodexProvider        wraps `codex exec` headless; `codex login status` probe
  ├─ core/                    pure, vscode-free, unit-tested
  │   ├─ exec.ts              spawn wrapper (timeout / abort / stdin)
  │   ├─ diffGuard.ts         measure + gate staged diffs
@@ -75,8 +84,8 @@ extension.ts            activation, command registration, config-change rewiring
  └─ git.ts                   repo lookup + staged diff + commit box
 ```
 
-The engine is behind `AIProvider`, so adding **Codex** later is a second adapter
-with no UI changes. Pure logic lives in `core/` with zero VS Code imports and is
+The engines live behind `AIProvider`; adding another CLI engine is one more
+adapter with no UI changes. Pure logic lives in `core/` with zero VS Code imports and is
 covered by `node:test`; the VS Code layer stays thin glue.
 
 See [`docs/PLAN.md`](docs/PLAN.md) for the full v1 spec and the design decisions
