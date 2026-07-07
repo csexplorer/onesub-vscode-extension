@@ -1,15 +1,15 @@
 # OneSub
 
-**One-click routine dev actions that run through your locally installed Claude Code CLI.**
+**One-click routine dev actions that run through your locally installed Claude Code | Codex CLI.**
 
 OneSub is a VS Code extension that adds buttons for the boring parts of coding —
 generating a commit message, explaining a snippet, writing a docstring — and
-runs them through your own **Claude Code** CLI. If you already have Claude Code
+runs them through your own **Claude Code** | **Codex** CLI. If you already have Claude Code & Codex
 installed and signed in, the buttons just work.
 
 ## Why
 
-VS Code is free, and if you already have Claude Code installed, it already talks
+VS Code is free, and if you already have Claude Code | Codex installed, it already talks
 to a model. OneSub wires that CLI into the editor as a few sharp buttons — it
 never touches your tokens or credentials; the official CLI owns the auth.
 
