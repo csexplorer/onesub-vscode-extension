@@ -81,10 +81,21 @@
     "configuration": {
       "title": "OneSub",
       "properties": {
+        "onesub.engine": {
+          "type": "string",
+          "enum": ["claude-code", "codex"],
+          "default": "claude-code",
+          "description": "Which locally installed CLI engine runs the buttons."
+        },
         "onesub.claudePath": {
           "type": "string",
           "default": "claude",
           "description": "Path to the Claude Code CLI executable. Leave as 'claude' if it is on your PATH."
+        },
+        "onesub.codexPath": {
+          "type": "string",
+          "default": "codex",
+          "description": "Path to the Codex CLI executable. Leave as 'codex' if it is on your PATH."
         },
         "onesub.diffMaxLines": {
           "type": "number",
