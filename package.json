@@ -1,6 +1,6 @@
 {
   "name": "onesub",
-  "displayName": "OneSub — AI Buttons for Claude Code",
+  "displayName": "OneSub — AI Buttons for Claude Code & Codex",
   "description": "One-click routine dev actions (commit message, explain, docstring) that run through your locally installed Claude Code CLI.",
   "version": "0.1.3",
   "publisher": "onesub-dev",
