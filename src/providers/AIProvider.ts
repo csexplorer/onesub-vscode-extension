@@ -4,6 +4,9 @@
 
 export type HealthState = "healthy" | "not-installed" | "not-logged-in" | "error";
 
+/**
+ * Result of a health check for a CLI tool or dependency.
+ */
 export interface HealthStatus {
   state: HealthState;
   /** Short human explanation, shown in tooltips / walkthrough. */
