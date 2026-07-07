@@ -4,7 +4,9 @@
 import * as vscode from "vscode";
 import { BRAND } from "./brand.js";
 import { readConfig } from "./config.js";
+import { AIProvider } from "./providers/AIProvider.js";
 import { ClaudeCodeProvider } from "./providers/ClaudeCodeProvider.js";
+import { CodexProvider } from "./providers/CodexProvider.js";
 import { HealthManager } from "./ui/health.js";
 import { getChannel, disposeChannel, log } from "./ui/output.js";
 import { FeatureDeps } from "./features/deps.js";
@@ -14,8 +16,14 @@ import { generateDocstring } from "./features/generateDocstring.js";
 
 let health: HealthManager | undefined;
 
-function buildProvider(): ClaudeCodeProvider {
+function buildProvider(): AIProvider {
   const cfg = readConfig();
+  if (cfg.engine === "codex") {
+    return new CodexProvider({
+      codexPath: cfg.codexPath,
+      timeoutMs: cfg.requestTimeoutMs
+    });
+  }
   return new ClaudeCodeProvider({
     claudePath: cfg.claudePath,
     timeoutMs: cfg.requestTimeoutMs
