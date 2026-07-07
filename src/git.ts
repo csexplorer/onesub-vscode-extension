@@ -65,6 +65,18 @@ export async function getStagedDiff(repo: GitRepository): Promise<string> {
   return result.stdout;
 }
 
+/** Stage every tracked/untracked change in the repository (`git add -A`). */
+export async function stageAll(repo: GitRepository): Promise<void> {
+  const result = await run("git", {
+    args: ["add", "-A"],
+    cwd: repo.rootUri.fsPath,
+    timeoutMs: 15_000
+  });
+  if (result.code !== 0) {
+    throw new Error(result.stderr.trim() || `git add exited with code ${result.code}`);
+  }
+}
+
 /** Write the generated message into the Source Control input box. */
 export function setCommitMessage(repo: GitRepository, message: string): void {
   repo.inputBox.value = message;

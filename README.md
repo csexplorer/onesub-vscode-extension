@@ -18,7 +18,7 @@ touches your tokens or credentials; the official CLI owns the auth.
 
 | Button | Where | What it does |
 | --- | --- | --- |
-| **Generate Commit Message** | Source Control title bar | Reads the staged diff → **fills** the commit box (never auto-commits). Refuses oversized diffs instead of truncating. |
+| **Generate Commit Message** | Source Control title bar | Reads the staged diff (stages everything first if nothing is staged) → **fills** the commit box (never auto-commits). Refuses oversized diffs instead of truncating. |
 | **Explain Selection** | Editor right-click / Command Palette | Explains the selected code in a transient markdown view. |
 | **Generate Docstring** | Editor right-click / Command Palette | Inserts an idiomatic doc comment above the selection (or current line). |
 

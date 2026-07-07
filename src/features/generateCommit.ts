@@ -1,14 +1,15 @@
 // Flagship: read the staged diff, generate a commit message, and FILL the
 // Source Control input box — never auto-commit (human stays in the loop).
-// Oversized diffs are refused, not truncated. On any failure the commit box is
-// left untouched (no partial write).
+// If nothing is staged, stages everything (git add -A) first so the button
+// works from a dirty working tree. Oversized diffs are refused, not
+// truncated. On any failure the commit box is left untouched (no partial write).
 import * as vscode from "vscode";
 import { FeatureDeps } from "./deps.js";
 import { readConfig } from "../config.js";
 import { checkDiff } from "../core/diffGuard.js";
 import { buildCommitPrompt } from "../core/prompts.js";
 import { cleanCommitMessage } from "../core/parse.js";
-import { pickRepository, getStagedDiff, setCommitMessage, NoRepositoryError } from "../git.js";
+import { pickRepository, getStagedDiff, setCommitMessage, stageAll, NoRepositoryError } from "../git.js";
 import { withBusy, isCancellation } from "../ui/progress.js";
 import { showError, log } from "../ui/output.js";
 import { BRAND } from "../brand.js";
@@ -30,7 +31,11 @@ export async function generateCommitMessage(deps: FeatureDeps): Promise<void> {
   }
 
   try {
-    const diff = await getStagedDiff(repo);
+    let diff = await getStagedDiff(repo);
+    if (!diff.trim()) {
+      await stageAll(repo);
+      diff = await getStagedDiff(repo);
+    }
     const verdict = checkDiff(diff, cfg.diffMaxLines);
     if (!verdict.ok) {
       // Refuse — commit box left untouched.
