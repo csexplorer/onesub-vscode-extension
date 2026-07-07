@@ -47,6 +47,12 @@ test("checkDiff accepts in-range diff", () => {
   assert.equal(v.reason, undefined);
 });
 
+test("checkDiff maxLines=0 disables the size check", () => {
+  const v = checkDiff(SAMPLE_DIFF, 0);
+  assert.equal(v.ok, true);
+  assert.equal(v.reason, undefined);
+});
+
 test("buildCommitPrompt embeds diff and convention wording", () => {
   const p = buildCommitPrompt("+a\n-b", "conventional");
   assert.match(p, /Conventional Commits/);

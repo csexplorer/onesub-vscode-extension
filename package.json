@@ -89,9 +89,9 @@
         },
         "onesub.diffMaxLines": {
           "type": "number",
-          "default": 400,
-          "minimum": 20,
-          "description": "Refuse to generate a commit message when the staged diff exceeds this many changed lines."
+          "default": 0,
+          "minimum": 0,
+          "description": "Refuse to generate a commit message when the staged diff exceeds this many changed lines. 0 disables the check."
         },
         "onesub.commitConvention": {
           "type": "string",

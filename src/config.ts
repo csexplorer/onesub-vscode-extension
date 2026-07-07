@@ -15,7 +15,7 @@ export function readConfig(): OneSubConfig {
   const convention = c.get<string>("commitConvention", "conventional");
   return {
     claudePath: c.get<string>("claudePath", "claude"),
-    diffMaxLines: c.get<number>("diffMaxLines", 400),
+    diffMaxLines: c.get<number>("diffMaxLines", 0),
     commitConvention: convention === "plain" ? "plain" : "conventional",
     requestTimeoutMs: c.get<number>("requestTimeoutMs", 60_000)
   };

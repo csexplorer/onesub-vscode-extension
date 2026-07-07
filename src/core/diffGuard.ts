@@ -43,13 +43,14 @@ export interface DiffVerdict {
 /**
  * Decide whether a staged diff is small enough to summarise.
  * Returns ok:false with a human reason when empty or over the limit.
+ * maxLines <= 0 disables the size check entirely.
  */
 export function checkDiff(diff: string, maxLines: number): DiffVerdict {
   const size = measureDiff(diff);
   if (size.changedLines === 0) {
     return { ok: false, size, reason: "Nothing is staged. Stage changes first." };
   }
-  if (size.changedLines > maxLines) {
+  if (maxLines > 0 && size.changedLines > maxLines) {
     return {
       ok: false,
       size,

@@ -43,7 +43,7 @@ rather than failing silently.
 | Setting | Default | Purpose |
 | --- | --- | --- |
 | `onesub.claudePath` | `claude` | Path to the CLI if it isn't on `PATH`. |
-| `onesub.diffMaxLines` | `400` | Refuse commit generation above this many changed lines. |
+| `onesub.diffMaxLines` | `0` | Refuse commit generation above this many changed lines. `0` disables the check. |
 | `onesub.commitConvention` | `conventional` | `conventional` (feat:/fix:) or `plain`. |
 | `onesub.requestTimeoutMs` | `60000` | Abort a call after this long. |
 
