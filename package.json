@@ -1,8 +1,8 @@
 {
   "name": "onesub",
-  "displayName": "OneSub — AI Buttons for Claude Code & Codex",
-  "description": "One-click routine dev actions (commit message, explain, docstring) that run through your locally installed Claude Code | Codex CLI.",
-  "version": "0.2.0",
+  "displayName": "OneSub — One-Click AI Dev Actions",
+  "description": "One-click routine dev actions (commit message, explain, docstring) powered by a locally installed AI coding CLI you already use.",
+  "version": "0.2.1",
   "publisher": "onesub-dev",
   "license": "MIT",
   "icon": "media/icon.png",
@@ -19,10 +19,11 @@
     "Other"
   ],
   "keywords": [
-    "claude",
     "commit message",
     "ai",
-    "codegen"
+    "codegen",
+    "developer tools",
+    "productivity"
   ],
   "main": "./dist/extension.js",
   "activationEvents": [
@@ -125,7 +126,7 @@
           "type": "number",
           "default": 60000,
           "minimum": 5000,
-          "description": "Maximum time to wait for a Claude Code & Codex response before aborting."
+          "description": "Maximum time to wait for the CLI engine to respond before aborting."
         }
       }
     }

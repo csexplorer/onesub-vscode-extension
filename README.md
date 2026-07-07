@@ -1,17 +1,22 @@
 # OneSub
 
-**One-click routine dev actions that run through your locally installed Claude Code | Codex CLI.**
+**One-click routine dev actions powered by an AI coding CLI you already have installed.**
 
 OneSub is a VS Code extension that adds buttons for the boring parts of coding —
 generating a commit message, explaining a snippet, writing a docstring — and
-runs them through your own **Claude Code** | **Codex** CLI. If you already have Claude Code & Codex
-installed and signed in, the buttons just work.
+runs them through a compatible command-line AI engine you already have installed
+and signed in. The buttons just work; no extra account or setup.
+
+> **Not affiliated with, endorsed by, or sponsored by Anthropic or OpenAI.**
+> OneSub is an independent extension that shells out to whichever supported CLI
+> engine you choose. Product names below are referenced only to tell you which
+> tool to install; all trademarks belong to their respective owners.
 
 ## Why
 
-VS Code is free, and if you already have Claude Code | Codex installed, it already talks
-to a model. OneSub wires that CLI into the editor as a few sharp buttons — it
-never touches your tokens or credentials; the official CLI owns the auth.
+VS Code is free, and if you already have a command-line AI engine installed, it
+already talks to a model. OneSub wires that CLI into the editor as a few sharp
+buttons — it never touches your tokens or credentials; the CLI owns the auth.
 
 ## Features (v1)
 
