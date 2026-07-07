@@ -2,7 +2,7 @@
   "name": "onesub",
   "displayName": "OneSub — AI Buttons for Claude Code",
   "description": "One-click routine dev actions (commit message, explain, docstring) that run through your locally installed Claude Code CLI.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "publisher": "onesub-dev",
   "license": "MIT",
   "icon": "media/icon.png",
