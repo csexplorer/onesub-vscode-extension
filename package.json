@@ -1,6 +1,6 @@
 {
-  "name": "solo",
-  "displayName": "Solo — Subscription-Powered AI Buttons",
+  "name": "onesub",
+  "displayName": "OneSub — Subscription-Powered AI Buttons",
   "description": "One-click routine dev actions (commit message, explain, docstring) powered by your own Claude Code subscription. No Copilot, no API key, no second subscription.",
   "version": "0.1.0",
   "publisher": "solo-dev",
@@ -27,74 +27,74 @@
   "contributes": {
     "commands": [
       {
-        "command": "solo.generateCommitMessage",
+        "command": "onesub.generateCommitMessage",
         "title": "Generate Commit Message",
-        "category": "Solo",
+        "category": "OneSub",
         "icon": "$(sparkle)"
       },
       {
-        "command": "solo.explainSelection",
+        "command": "onesub.explainSelection",
         "title": "Explain Selection",
-        "category": "Solo"
+        "category": "OneSub"
       },
       {
-        "command": "solo.generateDocstring",
+        "command": "onesub.generateDocstring",
         "title": "Generate Docstring",
-        "category": "Solo"
+        "category": "OneSub"
       },
       {
-        "command": "solo.recheckHealth",
+        "command": "onesub.recheckHealth",
         "title": "Re-check Engine",
-        "category": "Solo"
+        "category": "OneSub"
       }
     ],
     "menus": {
       "scm/title": [
         {
-          "command": "solo.generateCommitMessage",
+          "command": "onesub.generateCommitMessage",
           "group": "navigation",
           "when": "scmProvider == git"
         }
       ],
       "editor/context": [
         {
-          "command": "solo.explainSelection",
-          "group": "solo@1",
+          "command": "onesub.explainSelection",
+          "group": "onesub@1",
           "when": "editorHasSelection"
         },
         {
-          "command": "solo.generateDocstring",
-          "group": "solo@2"
+          "command": "onesub.generateDocstring",
+          "group": "onesub@2"
         }
       ],
       "commandPalette": [
-        { "command": "solo.generateCommitMessage" },
-        { "command": "solo.explainSelection" },
-        { "command": "solo.generateDocstring" },
-        { "command": "solo.recheckHealth" }
+        { "command": "onesub.generateCommitMessage" },
+        { "command": "onesub.explainSelection" },
+        { "command": "onesub.generateDocstring" },
+        { "command": "onesub.recheckHealth" }
       ]
     },
     "configuration": {
-      "title": "Solo",
+      "title": "OneSub",
       "properties": {
-        "solo.claudePath": {
+        "onesub.claudePath": {
           "type": "string",
           "default": "claude",
           "description": "Path to the Claude Code CLI executable. Leave as 'claude' if it is on your PATH."
         },
-        "solo.diffMaxLines": {
+        "onesub.diffMaxLines": {
           "type": "number",
           "default": 400,
           "minimum": 20,
           "description": "Refuse to generate a commit message when the staged diff exceeds this many changed lines."
         },
-        "solo.commitConvention": {
+        "onesub.commitConvention": {
           "type": "string",
           "enum": ["conventional", "plain"],
           "default": "conventional",
           "description": "Commit message style. 'conventional' produces Conventional Commits (feat:, fix:, ...); 'plain' produces a plain summary."
         },
-        "solo.requestTimeoutMs": {
+        "onesub.requestTimeoutMs": {
           "type": "number",
           "default": 60000,
           "minimum": 5000,

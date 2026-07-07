@@ -71,7 +71,7 @@ export class ClaudeCodeProvider implements AIProvider {
       if (err instanceof TimeoutError) {
         throw new AIProviderError(
           `Claude Code timed out after ${err.timeoutMs}ms.`,
-          "The request was aborted. Try again or raise solo.requestTimeoutMs."
+          "The request was aborted. Try again or raise onesub.requestTimeoutMs."
         );
       }
       throw err; // AbortError / unexpected — let the caller handle.

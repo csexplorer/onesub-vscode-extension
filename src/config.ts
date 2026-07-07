@@ -3,14 +3,14 @@ import * as vscode from "vscode";
 import { BRAND } from "./brand.js";
 import { CommitConvention } from "./core/prompts.js";
 
-export interface SoloConfig {
+export interface OneSubConfig {
   claudePath: string;
   diffMaxLines: number;
   commitConvention: CommitConvention;
   requestTimeoutMs: number;
 }
 
-export function readConfig(): SoloConfig {
+export function readConfig(): OneSubConfig {
   const c = vscode.workspace.getConfiguration(BRAND.id);
   const convention = c.get<string>("commitConvention", "conventional");
   return {

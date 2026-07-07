@@ -56,7 +56,7 @@ export function checkDiff(diff: string, maxLines: number): DiffVerdict {
       reason:
         `Staged diff is too large (${size.changedLines} changed lines across ` +
         `${size.changedFiles} file(s); limit is ${maxLines}). ` +
-        `Commit in smaller chunks, or raise "solo.diffMaxLines".`
+        `Commit in smaller chunks, or raise "onesub.diffMaxLines".`
     };
   }
   return { ok: true, size };

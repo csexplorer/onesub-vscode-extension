@@ -1,4 +1,4 @@
-# Solo — v1 Plan & Design Decisions
+# OneSub — v1 Plan & Design Decisions
 
 This is the locked spec produced by a design grilling session. Each decision
 records the choice and the reason it beat the alternative.
