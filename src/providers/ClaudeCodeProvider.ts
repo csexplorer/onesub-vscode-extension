@@ -13,26 +13,10 @@ import {
   ExecutableNotFoundError,
   TimeoutError
 } from "../core/exec.js";
+import { looksLikeAuthFailure } from "./authPatterns.js";
 
 const INSTALL_REMEDY = "npm install -g @anthropic-ai/claude-code";
 const LOGIN_REMEDY = "claude";
-
-// stderr fragments that mean "installed but not authenticated".
-const AUTH_PATTERNS = [
-  /log ?in/i,
-  /sign ?in/i,
-  /authenticat/i,
-  /unauthori[sz]ed/i,
-  /not authenticated/i,
-  /credential/i,
-  /api key/i,
-  /\b401\b/,
-  /\b403\b/
-];
-
-function looksLikeAuthFailure(text: string): boolean {
-  return AUTH_PATTERNS.some((re) => re.test(text));
-}
 
 export interface ClaudeCodeOptions {
   /** Path/name of the CLI. Defaults to "claude" (resolved via PATH). */
