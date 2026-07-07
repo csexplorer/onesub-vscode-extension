@@ -32,24 +32,20 @@
     "commands": [
       {
         "command": "onesub.generateCommitMessage",
-        "title": "Generate Commit Message",
-        "category": "OneSub",
+        "title": "OneSub: Generate Commit Message",
         "icon": "$(sparkle)"
       },
       {
         "command": "onesub.explainSelection",
-        "title": "Explain Selection",
-        "category": "OneSub"
+        "title": "OneSub: Explain Selection"
       },
       {
         "command": "onesub.generateDocstring",
-        "title": "Generate Docstring",
-        "category": "OneSub"
+        "title": "OneSub: Generate Docstring"
       },
       {
         "command": "onesub.recheckHealth",
-        "title": "Re-check Engine",
-        "category": "OneSub"
+        "title": "OneSub: Re-check Engine"
       }
     ],
     "menus": {
