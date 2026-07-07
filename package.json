@@ -1,0 +1,121 @@
+{
+  "name": "solo",
+  "displayName": "Solo — Subscription-Powered AI Buttons",
+  "description": "One-click routine dev actions (commit message, explain, docstring) powered by your own Claude Code subscription. No Copilot, no API key, no second subscription.",
+  "version": "0.1.0",
+  "publisher": "solo-dev",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "SCM Providers",
+    "Machine Learning",
+    "Other"
+  ],
+  "keywords": [
+    "claude",
+    "commit message",
+    "ai",
+    "subscription",
+    "codegen"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "solo.generateCommitMessage",
+        "title": "Generate Commit Message",
+        "category": "Solo",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "solo.explainSelection",
+        "title": "Explain Selection",
+        "category": "Solo"
+      },
+      {
+        "command": "solo.generateDocstring",
+        "title": "Generate Docstring",
+        "category": "Solo"
+      },
+      {
+        "command": "solo.recheckHealth",
+        "title": "Re-check Engine",
+        "category": "Solo"
+      }
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "solo.generateCommitMessage",
+          "group": "navigation",
+          "when": "scmProvider == git"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "solo.explainSelection",
+          "group": "solo@1",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "solo.generateDocstring",
+          "group": "solo@2"
+        }
+      ],
+      "commandPalette": [
+        { "command": "solo.generateCommitMessage" },
+        { "command": "solo.explainSelection" },
+        { "command": "solo.generateDocstring" },
+        { "command": "solo.recheckHealth" }
+      ]
+    },
+    "configuration": {
+      "title": "Solo",
+      "properties": {
+        "solo.claudePath": {
+          "type": "string",
+          "default": "claude",
+          "description": "Path to the Claude Code CLI executable. Leave as 'claude' if it is on your PATH."
+        },
+        "solo.diffMaxLines": {
+          "type": "number",
+          "default": 400,
+          "minimum": 20,
+          "description": "Refuse to generate a commit message when the staged diff exceeds this many changed lines."
+        },
+        "solo.commitConvention": {
+          "type": "string",
+          "enum": ["conventional", "plain"],
+          "default": "conventional",
+          "description": "Commit message style. 'conventional' produces Conventional Commits (feat:, fix:, ...); 'plain' produces a plain summary."
+        },
+        "solo.requestTimeoutMs": {
+          "type": "number",
+          "default": 60000,
+          "minimum": 5000,
+          "description": "Maximum time to wait for a Claude Code response before aborting."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./tsconfig.json",
+    "bundle": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "pretest": "tsc -p ./tsconfig.json",
+    "test": "node --test out/**/*.test.js",
+    "typecheck": "tsc -p ./tsconfig.json --noEmit",
+    "vscode:prepublish": "node esbuild.js --production"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.90.0",
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.0"
+  }
+}
