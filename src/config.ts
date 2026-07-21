@@ -2,6 +2,7 @@
 import * as vscode from "vscode";
 import { BRAND } from "./brand.js";
 import { CommitConvention } from "./core/prompts.js";
+import { DEFAULT_DIFF_MAX_CHARS } from "./core/diffGuard.js";
 
 export type EngineId = "claude-code" | "codex";
 
@@ -10,6 +11,7 @@ export interface OneSubConfig {
   claudePath: string;
   codexPath: string;
   diffMaxLines: number;
+  diffMaxChars: number;
   commitConvention: CommitConvention;
   requestTimeoutMs: number;
 }
@@ -29,6 +31,7 @@ export function readConfig(): OneSubConfig {
     claudePath: trusted ? c.get<string>("claudePath", "claude") : "claude",
     codexPath: trusted ? c.get<string>("codexPath", "codex") : "codex",
     diffMaxLines: c.get<number>("diffMaxLines", 0),
+    diffMaxChars: c.get<number>("diffMaxChars", DEFAULT_DIFF_MAX_CHARS),
     commitConvention: convention === "plain" ? "plain" : "conventional",
     requestTimeoutMs: c.get<number>("requestTimeoutMs", 60_000)
   };

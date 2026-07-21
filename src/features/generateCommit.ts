@@ -36,7 +36,7 @@ export async function generateCommitMessage(deps: FeatureDeps): Promise<void> {
       await stageAll(repo);
       diff = await getStagedDiff(repo);
     }
-    const verdict = checkDiff(diff, cfg.diffMaxLines);
+    const verdict = checkDiff(diff, cfg.diffMaxLines, cfg.diffMaxChars);
     if (!verdict.ok) {
       // Refuse — commit box left untouched.
       vscode.window.showWarningMessage(`${BRAND.name}: ${verdict.reason}`);

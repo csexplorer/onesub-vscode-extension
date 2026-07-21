@@ -53,6 +53,26 @@ test("checkDiff maxLines=0 disables the size check", () => {
   assert.equal(v.reason, undefined);
 });
 
+test("checkDiff rejects a diff over the character limit", () => {
+  const v = checkDiff(SAMPLE_DIFF, 0, 10);
+  assert.equal(v.ok, false);
+  assert.match(v.reason!, /characters/);
+  assert.match(v.reason!, /diffMaxChars/);
+});
+
+test("checkDiff catches a long-line diff the line check misses", () => {
+  // One minified line, far over the character ceiling but only 1 changed line.
+  const minified = "diff --git a/x.css b/x.css\n+" + "a".repeat(5000);
+  assert.equal(checkDiff(minified, 400, 0).ok, true);
+  assert.equal(checkDiff(minified, 400, 1000).ok, false);
+});
+
+test("checkDiff maxChars=0 disables the character check", () => {
+  const v = checkDiff(SAMPLE_DIFF, 0, 0);
+  assert.equal(v.ok, true);
+  assert.equal(v.reason, undefined);
+});
+
 test("buildCommitPrompt embeds diff and convention wording", () => {
   const p = buildCommitPrompt("+a\n-b", "conventional");
   assert.match(p, /Conventional Commits/);

@@ -8,7 +8,16 @@ export interface DiffSize {
   changedLines: number;
   /** Number of distinct files touched. */
   changedFiles: number;
+  /** Raw size of the diff in characters — what the engine actually ingests. */
+  chars: number;
 }
+
+/**
+ * Default character ceiling for a staged diff.
+ * Engines reject prompts above ~1,048,576 characters outright; cap the diff
+ * well below that so the surrounding prompt text always fits.
+ */
+export const DEFAULT_DIFF_MAX_CHARS = 200_000;
 
 /**
  * Count the changed lines and files in a unified `git diff`.
@@ -30,7 +39,7 @@ export function measureDiff(diff: string): DiffSize {
       changedLines++;
     }
   }
-  return { changedLines, changedFiles };
+  return { changedLines, changedFiles, chars: diff.length };
 }
 
 export interface DiffVerdict {
@@ -42,13 +51,33 @@ export interface DiffVerdict {
 
 /**
  * Decide whether a staged diff is small enough to summarise.
- * Returns ok:false with a human reason when empty or over the limit.
- * maxLines <= 0 disables the size check entirely.
+ * Returns ok:false with a human reason when empty or over a limit.
+ * maxLines <= 0 disables the line check; maxChars <= 0 disables the char check.
+ *
+ * The character check is the one that keeps the engine from rejecting the
+ * request: a line count says nothing about payload size (a single minified
+ * CSS or bundled file is one line and tens of kilobytes), so a diff can pass
+ * the line check and still blow past the engine's input ceiling.
  */
-export function checkDiff(diff: string, maxLines: number): DiffVerdict {
+export function checkDiff(
+  diff: string,
+  maxLines: number,
+  maxChars: number = DEFAULT_DIFF_MAX_CHARS
+): DiffVerdict {
   const size = measureDiff(diff);
   if (size.changedLines === 0) {
     return { ok: false, size, reason: "Nothing is staged. Stage changes first." };
+  }
+  if (maxChars > 0 && size.chars > maxChars) {
+    return {
+      ok: false,
+      size,
+      reason:
+        `Staged diff is too large (${size.chars.toLocaleString()} characters across ` +
+        `${size.changedFiles} file(s); limit is ${maxChars.toLocaleString()}). ` +
+        `The engine rejects prompts this big. Commit in smaller chunks, or raise ` +
+        `"onesub.diffMaxChars".`
+    };
   }
   if (maxLines > 0 && size.changedLines > maxLines) {
     return {
