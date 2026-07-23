@@ -18,6 +18,39 @@ import { looksLikeAuthFailure } from "./authPatterns.js";
 const INSTALL_REMEDY = "npm install -g @anthropic-ai/claude-code";
 const LOGIN_REMEDY = "claude";
 
+/**
+ * Flags that strip the CLI down to a one-shot text transform.
+ *
+ * By default `claude -p` boots the user's whole interactive environment —
+ * SessionStart hooks, plugins, skills, CLAUDE.md, MCP servers, every tool — on
+ * every single invocation. On a machine with a few plugins and MCP servers that
+ * turns a ~4s request into 60s+ (and sometimes never returns). None of it is
+ * useful for "turn this diff into a commit message", so we opt out:
+ *
+ *  - `--setting-sources ""` — no hooks/plugins/skills/CLAUDE.md. The dominant
+ *    cost by far. Auth is unaffected (credentials do not live in settings).
+ *  - `--strict-mcp-config` + empty `--mcp-config` — no MCP server startup.
+ *  - `--disallowed-tools` — the model answers from the prompt instead of
+ *    agentically reading the repo first.
+ *
+ * Mirrors the discipline the Codex adapter already applies via
+ * `--ephemeral` / `-s read-only`.
+ */
+const ISOLATION_ARGS = [
+  "--setting-sources", "",
+  "--strict-mcp-config",
+  "--mcp-config", '{"mcpServers":{}}',
+  "--disallowed-tools",
+  "Bash,Read,Write,Edit,Glob,Grep,WebFetch,WebSearch,Task,TodoWrite,NotebookEdit"
+];
+
+/**
+ * Timeout for the tier-2 sign-in probe. Generous relative to the ~4s an
+ * isolated call takes, because a cold CLI start on a slow disk is not a
+ * sign-in failure and must not be reported as one.
+ */
+const HEALTH_PROBE_TIMEOUT_MS = 45_000;
+
 export interface ClaudeCodeOptions {
   /** Path/name of the CLI. Defaults to "claude" (resolved via PATH). */
   claudePath?: string;
@@ -39,7 +72,7 @@ export class ClaudeCodeProvider implements AIProvider {
     let result;
     try {
       result = await run(this.claudePath, {
-        args: ["-p"],
+        args: ["-p", ...ISOLATION_ARGS],
         input: req.prompt,
         cwd: req.cwd,
         timeoutMs: req.timeoutMs ?? this.defaultTimeout,
@@ -115,12 +148,13 @@ export class ClaudeCodeProvider implements AIProvider {
     }
 
     // Tier 2 — authenticated? A minimal print-mode call; costs a tiny amount of
-    // quota, so callers cache the result and only re-run on demand.
+    // quota, so callers cache the result and only re-run on demand. Pinned to
+    // the cheapest/fastest model: this only has to prove that credentials work.
     try {
       const probe = await run(this.claudePath, {
-        args: ["-p"],
+        args: ["-p", ...ISOLATION_ARGS, "--model", "haiku"],
         input: "Reply with the single word: OK",
-        timeoutMs: 20_000,
+        timeoutMs: HEALTH_PROBE_TIMEOUT_MS,
         signal
       });
       if (probe.code === 0 && probe.stdout.trim()) {
