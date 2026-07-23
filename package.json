@@ -2,7 +2,7 @@
   "name": "onesub",
   "displayName": "OneSub — One-Click AI Dev Actions",
   "description": "One-click routine dev actions (commit message, explain, docstring) powered by a locally installed AI coding CLI you already use.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "publisher": "onesub-dev",
   "license": "MIT",
   "icon": "media/icon.png",
